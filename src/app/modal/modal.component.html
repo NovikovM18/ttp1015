@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Photo info</h1>
+<span>
+  <span>Date: {{data.photo.earth_date}}</span>
+  /
+  <span>Sol: {{data.photo.sol}}</span>
+</span>
+<p>Rover: {{data.photo.rover.name}}</p>
+<p>Camera: {{data.photo.camera.full_name}}</p>
+<div mat-dialog-content>
+  <img
+    class="img"
+    [src]="data.photo.img_src" 
+    alt="photo"
+  >
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</div>

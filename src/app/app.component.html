@@ -1,0 +1,83 @@
+<div class="app">
+  <div class="container">
+    <h1>Mars Rover Photos</h1>
+
+    <div class="form">
+      <mat-form-field appearance="fill">
+        <mat-label>Select rover</mat-label>
+        <mat-select disableRipple [formControl]="rover" (selectionChange)="getPhotos(this.queryingBy.value || 'sol')">
+          <mat-option 
+            *ngFor="let rover of rovers"  
+            [value]="rover"
+            >
+            {{rover}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    
+      <mat-form-field appearance="fill">
+        <mat-label>Select camera</mat-label>
+        <mat-select disableRipple [formControl]="camera" (selectionChange)="getPhotos(this.queryingBy.value || 'sol')">
+          <mat-option 
+            *ngFor="let camera of cameras"  
+            [value]="camera.value"
+          >
+            {{camera.option}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Select Querying by</mat-label>
+        <mat-select disableRipple [formControl]="queryingBy" (selectionChange)="getPhotos(this.queryingBy.value || 'sol')">
+          <mat-option 
+            *ngFor="let option of queryingByOptions"  
+            [value]="option.value"
+          >
+            {{option.option}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field *ngIf="this.queryingBy.value === 'sol'" class="example-full-width" appearance="fill">
+        <mat-label>Sol</mat-label>
+        <input matInput type="number" [value]="sol" [formControl]="sol" (change)="getPhotos('sol')">
+      </mat-form-field>
+      
+      <mat-form-field *ngIf="this.queryingBy.value === 'date'" class="example-full-width" appearance="fill">
+        <mat-label>earth_date</mat-label>
+        <input 
+          matInput type="date" [value]="earth_date" [formControl]="earth_date" (change)="getPhotos('date')">
+      </mat-form-field>
+    </div>
+
+    <div class="content">
+      <div 
+        *ngIf="photos.length || loading; else emptyPhoto" 
+        class="photos"
+      >
+        <img 
+          *ngFor="let photo of photos" 
+          class="photos__item" 
+          [src]="photo.img_src" 
+          alt="photo"
+          (click)="openModal(photo)"
+        >
+      </div>
+      <ng-template #emptyPhoto>
+        <p>No photo for your queryings...</p>
+      </ng-template>
+    </div>
+    <mat-spinner *ngIf="loading"></mat-spinner>
+    <p *ngIf="itsAll">It's all photo for you querying</p>
+    <button
+      *ngIf="photos.length > 24"
+      class="btn" 
+      mat-fab color="primary" 
+      [disabled]="loading || itsAll"
+      (click)="loadMore(this.queryingBy.value || 'sol')"
+    >
+      Load more...
+    </button>
+  </div>
+</div>
